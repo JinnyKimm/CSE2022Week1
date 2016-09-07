@@ -2,49 +2,35 @@
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
+#include <sstream>
+#include <chrono>
 
-struct Vector2D
-{
-	int x;
-	int y;
-
-	void print()
-	{
-		printf("%d %d", x, y);
-	}
-};
-
-std::ostream &operator << (std::ostream &stream, Vector2D obj)
-{
-	stream << obj.x << " " << obj.y << std::endl;
-
-	return stream;
-}
+using namespace std;
 
 void main()
 {
-	Vector2D my_vector;
+	string sentence;
 
-	my_vector.x = 1;
-	my_vector.y = 2;
+	ifstream inFile;
+	inFile.open("test.txt");//open the input file
 
-	//FILE *of = fopen("cstyle.txt", "w");
+	stringstream strStream;
+	strStream << inFile.rdbuf();//read the file
+	sentence = strStream.str();
 
-	//fprintf(of, "%d %d", my_vector.x, my_vector.y);
+	std::cout << sentence << std::endl;
 
-	//fclose(of);
+	string input;
 
-	//my_vector.print();
+	auto begin = std::chrono::high_resolution_clock::now();
 
-	//printf("This is c style!");
+	std::getline(std::cin, input);
 
-	//std::cout << "This is c++ style!" << std::endl;
-	/*std::cout << my_vector.x 
-		<< " " << my_vector.y << std::endl;*/
+	std::cout << input << std::endl;
 
-	std::cout << my_vector << std::endl;
+	auto end = std::chrono::high_resolution_clock::now();
 
-	std::ofstream ofile("cppstyle.txt");
-	ofile << my_vector << std::endl;
+	std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "ns" << std::endl;
 
+	std::cout << sentence.compare(input) << std::endl;
 }
